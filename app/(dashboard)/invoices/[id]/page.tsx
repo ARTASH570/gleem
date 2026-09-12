@@ -4,6 +4,7 @@ import { updatePaymentAction } from "../actions";
 import { notFound } from "next/navigation";
 import InvoiceActions from "./InvoiceActions";
 import CancelInvoiceButton from "./CancelInvoiceButton";
+import ClinicLogo from "./ClinicLogo";
 
 export default async function InvoiceDetailPage({
   params,
@@ -51,17 +52,9 @@ export default async function InvoiceDetailPage({
       <div id="invoice-print-area" className="card">
         <div className="flex justify-between items-start mb-6 border-b border-gray-100 pb-4">
           <div className="flex items-center gap-3">
-            {/* لما تحط اللوجو في public/logo.png هيظهر هنا تلقائيًا.
-                لغاية ما تحطه، السطر ده مش هيبين حاجة عادي */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/logo.png"
-              alt="Gleem Clinic"
-              className="h-14 w-14 object-contain"
-              onError={(e) => {
-                (e.target as HTMLImageElement).style.display = "none";
-              }}
-            />
+           {/* لما تحط اللوجو في public/logo.png هيظهر هنا تلقائيًا.
+            لغاية ما تحطه، السطر ده مش هيبين حاجة عادي */}
+        <ClinicLogo />
             <div>
               <h1 className="text-xl font-bold">Gleem Clinic</h1>
               <p className="text-xs text-gray-400">جليم كلينك لطب الأسنان</p>
