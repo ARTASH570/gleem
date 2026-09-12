@@ -55,7 +55,7 @@ export default async function TreatmentsPage() {
             <input name="name" placeholder="اسم خدمة جديدة" required className="input-field" />
             <input
               type="number"
-              step="0.01"
+              step="1"
               name="default_price"
               placeholder="السعر"
               required
@@ -92,7 +92,7 @@ export default async function TreatmentsPage() {
             <div className="flex gap-1">
               <input
                 type="number"
-                step="0.01"
+                step="1"
                 name="quantity_used"
                 defaultValue={1}
                 className="input-field"

@@ -28,8 +28,11 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const isAuthRoute = request.nextUrl.pathname.startsWith("/login");
+  // endpoint عام بيتنده عليه من خدمة جدولة خارجية (زي cron-job.org) من غير
+  // تسجيل دخول، فلازم يستثنى من شرط "لازم يكون فيه يوزر مسجل دخول".
+  const isPublicRoute = isAuthRoute || request.nextUrl.pathname.startsWith("/api/keep-alive");
 
-  if (!user && !isAuthRoute) {
+  if (!user && !isPublicRoute) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);

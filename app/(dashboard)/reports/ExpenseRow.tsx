@@ -50,7 +50,7 @@ export default function ExpenseRow({ expense }: { expense: Expense }) {
             />
             <input
               type="number"
-              step="0.01"
+              step="1"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               className="input-field py-1 text-sm w-28"

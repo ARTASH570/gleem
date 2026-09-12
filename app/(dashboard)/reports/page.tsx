@@ -156,7 +156,7 @@ export default async function ReportsPage({
           <input name="title" placeholder="بيان المصروف" required className="input-field" />
           <input
             type="number"
-            step="0.01"
+            step="1"
             name="amount"
             placeholder="المبلغ"
             required

@@ -47,7 +47,7 @@ export default async function InventoryPage() {
                           <input
                             type="number"
                             name="add_qty"
-                            step="0.01"
+                            step="1"
                             placeholder="كمية"
                             className="input-field w-24 py-1"
                           />
@@ -94,17 +94,17 @@ export default async function InventoryPage() {
                 </div>
                 <div>
                   <label className="label">الكمية الحالية</label>
-                  <input type="number" step="0.01" name="quantity" defaultValue={0} className="input-field" />
+                  <input type="number" step="1" name="quantity" defaultValue={0} className="input-field" />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <label className="label">حد التنبيه الأدنى</label>
-                  <input type="number" step="0.01" name="min_quantity" defaultValue={0} className="input-field" />
+                  <input type="number" step="1" name="min_quantity" defaultValue={0} className="input-field" />
                 </div>
                 <div>
                   <label className="label">تكلفة الوحدة (ج.م)</label>
-                  <input type="number" step="0.01" name="unit_cost" defaultValue={0} className="input-field" />
+                  <input type="number" step="1" name="unit_cost" defaultValue={0} className="input-field" />
                 </div>
               </div>
               <button type="submit" className="btn-primary w-full">

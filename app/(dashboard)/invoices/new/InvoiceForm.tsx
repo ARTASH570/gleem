@@ -181,7 +181,7 @@ export default function InvoiceForm({
               />
               <input
                 type="number"
-                step="0.01"
+                step="1"
                 min={0}
                 className="input-field col-span-2"
                 placeholder="الكمية"
@@ -190,7 +190,7 @@ export default function InvoiceForm({
               />
               <input
                 type="number"
-                step="0.01"
+                step="1"
                 min={0}
                 className="input-field col-span-2"
                 placeholder="السعر"
@@ -221,7 +221,7 @@ export default function InvoiceForm({
         <label className="label">المبلغ المدفوع الآن</label>
         <input
           type="number"
-          step="0.01"
+          step="1"
           name="paid_amount"
           value={paidAmount}
           onChange={(e) => setPaidAmount(Number(e.target.value))}
