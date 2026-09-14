@@ -4,7 +4,7 @@ import { requireProfile } from "@/lib/auth";
 import { logout } from "@/app/login/actions";
 import { APP_VERSION } from "@/lib/version";
 import ThemeToggle from "./ThemeToggle";
-import NotificationsBell from "./NotificationsBell";
+import BackButton from "./_components/BackButton";
 
 // بيمنع الكاش على كل صفحات لوحة التحكم، عشان أي تعديل (زي خصم من
 // المخزن أو فاتورة جديدة) يظهر فورًا من غير ما تحتاج تعمل refresh يدوي
@@ -49,47 +49,10 @@ export default async function DashboardLayout({
 
   const links = [{ href: "/", label: "الرئيسية", icon: "🏠" }];
 
-  // عدادات التنبيهات في الجرس أعلى الصفحة - مش محتاجة للأدمن (دوره
-  // بس النسخ الاحتياطي ووضع الصيانة)
-  let notificationCounts = { todayAppointmentsCount: 0, lowStockCount: 0, overdueInvoicesCount: 0 };
-  if (profile.role !== "admin") {
-    const todayStart = new Date();
-    todayStart.setHours(0, 0, 0, 0);
-    const todayEnd = new Date();
-    todayEnd.setHours(23, 59, 59, 999);
-
-    const [{ count: todayAppointmentsCount }, { data: lowStock }, { count: overdueInvoicesCount }] =
-      await Promise.all([
-        supabase
-          .from("appointments")
-          .select("*", { count: "exact", head: true })
-          .eq("status", "scheduled")
-          .gte("appointment_date", todayStart.toISOString())
-          .lte("appointment_date", todayEnd.toISOString()),
-        supabase
-          .from("inventory_items")
-          .select("quantity, min_quantity, low_stock_dismissed_until")
-          .eq("is_active", true),
-        supabase.from("invoices").select("*", { count: "exact", head: true }).in("status", ["unpaid", "partial"]),
-      ]);
-
-    const now = Date.now();
-    const lowStockCount = (lowStock ?? []).filter((i) => {
-      if (Number(i.quantity) > Number(i.min_quantity)) return false;
-      if (!i.low_stock_dismissed_until) return true;
-      return new Date(i.low_stock_dismissed_until).getTime() <= now;
-    }).length;
-
-    notificationCounts = {
-      todayAppointmentsCount: todayAppointmentsCount ?? 0,
-      lowStockCount,
-      overdueInvoicesCount: overdueInvoicesCount ?? 0,
-    };
-  }
-
   if (profile.role !== "admin") {
     links.push(
       { href: "/search", label: "بحث شامل", icon: "🔍" },
+      { href: "/queue", label: "إدارة الطابور", icon: "🪑" },
       { href: "/patients", label: "العيانين", icon: "🧑‍⚕️" },
       { href: "/appointments", label: "المواعيد", icon: "📅" },
       { href: "/invoices", label: "الفواتير", icon: "🧾" },
@@ -137,18 +100,14 @@ export default async function DashboardLayout({
         </div>
         <form action={logout} className="p-3 border-t border-white/10">
           <button className="w-full text-sm text-right text-white/80 hover:text-white px-3 py-2">
-            تسجيل الخروج ↩
+            تسجيل الخروج ↩️
           </button>
         </form>
         <p className="text-center text-[10px] text-white/30 pb-2">v{APP_VERSION}</p>
       </aside>
-      <main className="flex-1 bg-gray-50 dark:bg-gray-900 min-h-screen print:bg-white">
-        {profile.role !== "admin" && (
-          <div className="flex items-center justify-end px-6 py-2 border-b border-gray-200 dark:border-gray-800 print:hidden">
-            <NotificationsBell {...notificationCounts} />
-          </div>
-        )}
-        <div className="p-6 print:p-0">{children}</div>
+      <main className="flex-1 p-6 bg-gray-50 dark:bg-gray-900 min-h-screen print:p-0 print:bg-white">
+        <BackButton />
+        {children}
       </main>
     </div>
   );
